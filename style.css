@@ -113,3 +113,31 @@ body{
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 
 }
+body{
+    background-color: rgb(61, 87, 219);
+}
+
+
+.login{
+    outline-color: black;
+    background-color: thistle;
+    text-align: center;
+    width: 300px;
+    height: 400px;
+    margin: 150px auto;
+   
+    border-color: black;
+    border-style: solid;
+
+ 
+    
+
+}
+.login input{
+    padding: 10px;
+    border-radius: 3px;
+}
+.login button{
+    border-radius: 5px;
+;
+}
