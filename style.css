@@ -10,7 +10,7 @@ body{
     margin: 0;
     font-size: 24px;
     font-weight: bold;
-    color: #E30000;
+    color: #f9f9f9;
 }
 .logo{
     display: flex;
@@ -19,11 +19,34 @@ body{
 .header a{
     margin: 0 15px;
     text-decoration: none;
-    color: #E30000;
+    color: white;
 }
 .nav-links{
     display: flex;
     align-items: center;
+    list-style: none;
+    
+}
+.footer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    background-color: #0072E3;
+
+
+    padding: 10px 20px;
+}
+.footer a{
+    margin: 0 15px;
+    text-decoration: none;
+    color:white;
+}
+.footer-links{
+    display: flex;
+    align-items: end center;
     list-style: none;
     
 }
