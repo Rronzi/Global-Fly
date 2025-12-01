@@ -1,18 +1,25 @@
+body{
+    margin: 0;
+}
 .header{
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-}
-.header{
+    background-color: #0072E3;
+    margin: 0;
     font-size: 24px;
     font-weight: bold;
-    color: #333;
+    color: #E30000;
+}
+.logo{
+    display: flex;
+    align-items: center;
 }
 .header a{
     margin: 0 15px;
     text-decoration: none;
-    color: #555;
+    color: #E30000;
 }
 .nav-links{
     display: flex;
