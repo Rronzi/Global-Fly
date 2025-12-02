@@ -113,9 +113,7 @@ body{
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 
 }
-body{
-    background-color: rgb(61, 87, 219);
-}
+
 
 /*login css------------------------------------------------------------*/
 .login{
@@ -124,7 +122,7 @@ body{
     justify-items: center;
     flex-direction: column;
     outline-color: black;
-    background-color: thistle;
+    background-color: rgb(242, 159, 107);
     text-align: center;
     width: 350px;
     height: 500px;
@@ -183,10 +181,12 @@ body{
     display: flex;
     align-items: center;
     border-radius: 6px;
-    background-color: chocolate;
+    background-color:#0A1A2F;
     outline-color: black;
     padding: 10px;
     font-weight: bold;
+    color: white;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .rubrika1{
@@ -243,8 +243,7 @@ body{
     height: 550px;
     margin: 150px auto;
    
-    border-color: black;
-    border-style: solid;
+   
 }
 .header2{
     display: flex;
@@ -297,7 +296,7 @@ body{
     align-items: center;
     width: 300px;
     padding: 20px;
-    background: #3c44b7;
+    background:rgb(242, 159, 107) ;
     border: 1px solid orange;
     border-radius: 6px;
 }
@@ -314,7 +313,7 @@ body{
     display: flex;
     align-items: center;
     border-radius: 6px;
-    background-color:  rgb(242, 159, 107);
+    background-color:  #0A1A2F;
     outline-color: black;
     padding: 10px;
     font-weight: bold;
@@ -359,4 +358,44 @@ body{
     height: 100%;
     background: rgba(0, 0, 0, 0.4); /* dark overlay */
 }
+.loginn input{
+    margin: 10px 0;
+    padding: 10px;
+    width: 70%;
+    border: 1px solid #090909;
+    border-radius: 5px;
+    
+}
+.loginn button a{
+    text-decoration: none;
+    color: white;
+    
+}
+.login button a{
+    text-decoration: none;
+    color: #ffffff;
+}
+.about-main{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    
+}
+.section{
+    flex:1.5;
+    padding: 20px;
+}
+.about-image{
+    flex:1;
+}
+.about-body{
+    background-color: #EAF3FF;
+}
+.section h2{
+    text-align: center;
+}
+.about-apps a img{
+    height: 40px;
+    width: 40px;
 
+}
