@@ -117,7 +117,7 @@ body{
     background-color: rgb(61, 87, 219);
 }
 
-
+/*login css------------------------------------------------------------*/
 .login{
     display : flex;
     align-items: center;
@@ -188,9 +188,7 @@ body{
     padding: 10px;
     font-weight: bold;
 }
-.logo{
-    border-color: chocolate;
-}
+
 .rubrika1{
       height: 600px;
     display: flex;
@@ -230,3 +228,135 @@ body{
     height: 100%;
     background: rgba(0, 0, 0, 0.4); /* dark overlay */
 }
+
+/*register css------------------------------------------------------------*/
+
+.Register{
+    display : flex;
+    align-items: center;
+    justify-items: center;
+    flex-direction: column;
+    outline-color: black;
+    background-color: rgb(144, 183, 52);
+    text-align: center;
+    width: 500px;
+    height: 550px;
+    margin: 150px auto;
+   
+    border-color: black;
+    border-style: solid;
+}
+.header2{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #0A1A2F;
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: orange;
+}
+.footer2{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    color:orange;
+    background-color: #0A1A2F;
+
+
+    padding: 10px 20px;
+}
+ .header2 a{
+    margin: 0 15px;
+    text-decoration: none;
+    color: orange;
+}
+.footer2 a{
+    margin: 0 15px;
+    text-decoration: none;
+    color:orange;
+}
+.footer2-links{
+    display: flex;
+    align-items: end center;
+    list-style: none;
+}
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.loginn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+    padding: 20px;
+    background: #3c44b7;
+    border: 1px solid orange;
+    border-radius: 6px;
+}
+
+.loginn input{
+    display: flex;
+    flex-direction: column;
+    
+    padding: 10px;
+    border-radius: 2px;
+   
+}
+.loginn button{
+    display: flex;
+    align-items: center;
+    border-radius: 6px;
+    background-color:  rgb(242, 159, 107);
+    outline-color: black;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.rubrika2{
+      height: 600px;
+    display: flex;
+
+    background-image: url("dubai.webp");
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    background-repeat: no-repeat;
+    background-size: 100% 100%; ;
+    opacity: 0.8;
+}
+.middle {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1; /* ensure it stays in the background */
+}
+
+/* The image becomes a blurred background */
+.background2 {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;       /* fill space */
+    filter: blur(10px);      /* blur strength */
+    display: block;
+}
+.background2::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* dark overlay */
+}
+
