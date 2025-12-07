@@ -208,15 +208,15 @@ body{
     width: 100%;
     height: 100%;
     overflow: hidden;
-    z-index: -1; /* ensure it stays in the background */
-}
+    z-index: -1;
+ }
 
-/* The image becomes a blurred background */
+
 .background1 {
     width: 100%;
     height: 100%;
-    object-fit: cover;       /* fill space */
-    filter: blur(10px);      /* blur strength */
+    object-fit: cover;       
+    filter: blur(10px);      
     display: block;
 }
 .background1::after {
@@ -226,7 +226,7 @@ body{
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.4); /* dark overlay */
+    background: rgba(0, 0, 0, 0.4); 
 }
 
 /*register css------------------------------------------------------------*/
@@ -338,15 +338,15 @@ body{
     width: 100%;
     height: 100%;
     overflow: hidden;
-    z-index: -1; /* ensure it stays in the background */
+    z-index: -1; 
 }
 
-/* The image becomes a blurred background */
+
 .background2 {
     width: 100%;
     height: 100%;
-    object-fit: cover;       /* fill space */
-    filter: blur(10px);      /* blur strength */
+    object-fit: cover;       
+    filter: blur(10px);      
     display: block;
 }
 .background2::after {
@@ -356,7 +356,7 @@ body{
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.4); /* dark overlay */
+    background: rgba(0, 0, 0, 0.4); 
 }
 .loginn input{
     margin: 10px 0;
@@ -399,3 +399,29 @@ body{
     width: 40px;
 
 }
+.page1-body{
+    background-color:   #D6ECFF;
+}
+.bgfoto1{
+    height: 600px;
+    display: flex;
+
+    background-image: url("dubai.webp");
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    background-repeat: no-repeat;
+    background-size: 100% 100%; ;
+    opacity: 0.9;
+}
+.rubrika button{
+    margin-top: 10px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background-color: #0A1A2F;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
