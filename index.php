@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Fly</title>
+    <link rel="stylesheet" href="style.css">
+</head> 
+<body class="index-body">
+    <!--Headeri/navbari-->
+    <header>
+        <nav class="header">
+            <div class="logo" onclick="window.location.href='#top'">
+                <img src="photos/logo.png" alt="Global Fly Logo" width="80" height="80">
+                <h1>Global Fly</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#top">Home</a></li>
+                <li><a href="about.php">About Us</a></li>
+                <li><a href="flights.php">Flights</a></li>
+                <li><a href="login.php">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    <!--permbajtja kryesore-->
+    <main>
+        <div class="bgfoto">
+            <input type="text" placeholder="Search" style="height: 30px; width: 500px;color: black;">
+            <button class="butoni_bg"><a href="flights.php">Search flights</a></button>
+        </div>
+        <div class="above-fotografite">
+            <h3>Suggestions</h3>
+        </div>
+        <div class="fotografite">
+            <div class="rubrika">
+                <img src="photos/miami.jpg" alt="" class="img">
+                <div class="qyteti">
+                    <p>Miami, Florida</p>
+                    <p>Rating: 4.5/5★</p>
+                </div>
+            </div>
+            <div class="rubrika">
+                <img src="photos/dubai.webp" alt="" class="img">
+                <div class="qyteti">
+                    <p>Dubai, UAE</p>
+                    <p>Rating: 4.7/5★</p>
+                </div>
+            </div>
+            <div class="rubrika">
+                <img src="photos/istanbul.jpg" alt="" class="img">
+                <div class="qyteti">
+                    <p>Istanbul, Turkey</p>
+                    <p>Rating: 4.6/5★</p>
+                </div>
+            </div>
+            <div class="rubrika">
+                <img src="photos/london.png" alt="" class="img">
+                <div class="qyteti">
+                    <p>London, UK</p>
+                    <p>Rating: 4.4/5★</p>
+                </div>
+            </div>
+            <div class="rubrika">
+                <img src="photos/madrid.jpg" alt="" class="img">
+                <div class="qyteti">
+                    <p>Madrid, Spain</p>
+                    <p>Rating: 4.3/5★</p>
+                </div>
+            </div>
+            <div class="rubrika">
+                <img src="photos/paris.webp" alt="" class="img">
+                <div class="qyteti">
+                    <p>Paris, France</p>
+                    <p>Rating: 4.2/5★</p>
+                </div>
+            </div>
+            <div class="rubrika">
+                <img src="photos/riodejaneiro.jpg" alt="" class="img">
+                <div class="qyteti">
+                    <p>Rio de Janeiro, Brazil</p>
+                    <p>Rating: 4.1/5★</p>
+                </div>
+            </div>
+            <div class="rubrika">
+                <img src="photos/rome.webp" alt="" class="img">
+                <div class="qyteti">
+                    <p>Rome, Italy</p>
+                    <p>Rating: 4.0/5★</p>
+                </div>
+            </div>
+            <div class="rubrika">
+                <img src="photos/tokyo.webp" alt="" class="img">
+                <div class="qyteti">
+                    <p>Tokyo, Japan</p>
+                    <p>Rating: 4.8/5★</p>
+                </div>
+            </div>
+            <div class="rubrika">
+                <img src="photos/zurich.jpeg" alt="" class="img">
+                <div class="qyteti">
+                    <p>Zurich, Switzerland</p>
+                    <p>Rating: 4.3/5★</p>
+                </div>
+            </div>
+            <div class="rubrika">
+                <img src="photos/NYC.jpg" alt="" class="img">
+                <div class="qyteti">
+                    <p>New York City, USA</p>
+                    <p>Rating: 4.5/5★</p>
+                </div>
+            </div>
+            <div class="rubrika">
+                <img src="photos/hongkong.jpg" alt="" class="img">
+                <div class="qyteti">
+                    <p>Hong Kong, China</p>
+                    <p>Rating: 4.4/5★</p>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+    
+    <!--Footeri-->
+    <footer class="footer">
+        <p>&copy; 2025 Global Fly</p>
+        <ul class="footer-links">
+        
+            <li><a href="#privacy">Privacy Policy</a></li>
+            <li><a href="#terms">Terms of Service</a></li>
+            <li><a href="#help">Help</a></li>
+        </ul>
+        
+    </footer>
+    
+</body>
+</html>
