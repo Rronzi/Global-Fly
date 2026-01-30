@@ -1,3 +1,8 @@
+<?php
+require_once "includes/Database.php";
+$db = new Database();
+$conn = $db->getConnection();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
