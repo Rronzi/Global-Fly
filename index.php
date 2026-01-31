@@ -1,5 +1,6 @@
 <?php
-require_once "includes/Database.php";
+session_start();
+require_once "database.php";
 $db = new Database();
 $conn = $db->getConnection();
 ?>
@@ -23,7 +24,12 @@ $conn = $db->getConnection();
                 <li><a href="#top">Home</a></li>
                 <li><a href="about.php">About Us</a></li>
                 <li><a href="flights.php">Flights</a></li>
-                <li><a href="login.php">Login</a></li>
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <li><a href="profile.php">Profile</a></li>
+                    <li><a href="logout.php">Logout</a></li>
+                <?php else: ?>
+                    <li><a href="login.php">Login</a></li>
+                <?php endif; ?>
             </ul>
         </nav>
     </header>

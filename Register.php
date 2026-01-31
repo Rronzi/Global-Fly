@@ -1,8 +1,38 @@
 <?php
-require_once "includes/Database.php";
+session_start();
+require_once "database.php";
 $db = new Database();
 $conn = $db->getConnection();
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $username = $_POST['username'];
+    $email    = $_POST['email'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $role     = 'user';
+
+    $sql = "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+
+    try {
+        $stmt->execute([$username, $email, $password, $role]);
+        
+        $query = "SELECT * FROM users WHERE username = ?";
+        $select_stmt = $conn->prepare($query);
+        $select_stmt->execute([$username]);
+        $user = $select_stmt->fetch(PDO::FETCH_ASSOC);
+        
+        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['role'] = $user['role'];
+        
+        header("Location: index.php");
+        exit;
+    } catch (PDOException $e) {
+        echo "User ekziston!";
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,17 +62,15 @@ $conn = $db->getConnection();
         <br>
         <img alt="Icon" src="photos/43916.jpg" width="125" style="border: 2px solid black;"><br><br><br>
         
-        
-        <input type="text" placeholder="Username" style="background-color: rgb(253, 245, 245);">
-        <input type="text" placeholder="First Name" style="background-color: rgb(253, 245, 245);">
-        <input type="text" placeholder="Last Name" style="background-color: rgb(253, 245, 245);">
-        <input type="email" placeholder="Email" style="background-color: rgb(253, 245, 245);">
-        <input type="password" placeholder="Password" style="background-color: rgb(253, 245, 245);">
-        
+        <form method="POST">
+            <input type="text" name="username" placeholder="Username" style="background-color: rgb(253, 245, 245);" required>
+            <input type="email" name="email" placeholder="Email" style="background-color: rgb(253, 245, 245);" required>
+            <input type="password" name="password" placeholder="Password" style="background-color: rgb(253, 245, 245);" required>
+            <button type="submit" style="margin-top: 15px;color: white;">Register</button>
+        </form>
         
         <br>
-        <button type="submit"><a href="index.php">Log in</a></button>
-        <p>Nuk deshironi te regjistroheni?</p>
+        <p>Already have an account? <a href="login.php">Login here</a></p>
         <button><a href="index.php">Go Back</a></button>
         <br>
 

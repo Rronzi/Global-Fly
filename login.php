@@ -1,7 +1,33 @@
 <?php
-require_once "includes/Database.php";
+session_start();
+require_once "database.php";
 $db = new Database();
 $conn = $db->getConnection();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = $_POST['username'] ?? '';
+    $password = $_POST['password'] ?? '';
+    
+    if (!empty($username) && !empty($password)) {
+        $query = "SELECT * FROM users WHERE username = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->execute([$username]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($user && password_verify($password, $user['password'])) {
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['role'] = $user['role'];
+            header("Location: index.php");
+            exit;
+        } else {
+            $error = "Username ose password gabim!";
+        }
+    } else {
+        $error = "Te lutem plotesoni te gjitha fushat!";
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,21 +53,25 @@ $conn = $db->getConnection();
                 <li><a href="#top">Login</a></li>
             </ul>
         </nav>
-      </header>
-      <div class="login">
+    </header>
+    <div class="login">
         <br>
         <img  alt="Icon" src="photos/login.png" width="125" style="border: 2px solid black;">
         
         <br><br><br><br>
   
-        <input type="text" placeholder="Username"><br>
-            
-        <input type="password" placeholder="Password">
-        <br>
-        <button type="submit"><a href="index.php">Log in</a></button>
-        <p>Shkoni te regjistrimi nëse nuk keni llogari.</p>
-        <button><a href="Register.php">Regjistrohu</a></button>
-        <br>
+        <form method="POST">
+            <?php if (isset($error)): ?>
+                <p style="color: red;"><?php echo htmlspecialchars($error); ?></p>
+            <?php endif; ?>
+            <input type="text" name="username" placeholder="Username" required><br>
+            <input type="password" name="password" placeholder="Password" required>
+            <br>
+            <button type="submit" style="color: white;">Log in</button>
+            <p>Shkoni te regjistrimi nëse nuk keni llogari.</p>
+            <button type="button"><a href="Register.php">Regjistrohu</a></button>
+            <br>
+        </form>
    
     </div>
    
