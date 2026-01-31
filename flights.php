@@ -27,8 +27,9 @@ $conn = $db->getConnection();
         </nav>
     </header>
     <main>
-        <div class="bgfoto1">
-            
+        <div class="bgfoto1" id="bgfoto1">
+            <button id="prevBtn" class="slider-btn prev-btn">&lt;</button>
+            <button id="nextBtn" class="slider-btn next-btn">&gt;</button>
         </div>
        
         <div class="above-fotografite">
@@ -99,4 +100,29 @@ $conn = $db->getConnection();
         
     </footer>
 </body>
+<script>
+let fotot = ['photos/parisi.png', 'photos/roma.png', 'photos/jesusi.jpg', 'photos/liberty.jpg', 'photos/piramidat.jpg', 'photos/mahali.jpg', 'photos/wallofchina.jpg','photos/meksika.jpg'];
+let index = 0;
+
+function changeBackground() {
+    document.getElementById('bgfoto1').style.backgroundImage = 'url(' + fotot[index] + ')';
+}
+
+function nextImage() {
+    index = (index + 1) % fotot.length;
+    changeBackground();
+}
+
+function prevImage() {
+    index = (index - 1 + fotot.length) % fotot.length;
+    changeBackground();
+}
+
+// Set initial background
+changeBackground();
+
+// Add event listeners to buttons
+document.getElementById('nextBtn').addEventListener('click', nextImage);
+document.getElementById('prevBtn').addEventListener('click', prevImage);
+</script>
 </html>

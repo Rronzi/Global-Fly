@@ -272,7 +272,6 @@ body{
 .bgfoto1{
     height: 600px;
     display: flex;
-    background-image: url("photos/dubai.webp");
     background-size: cover;
     background-position: center;
     position: relative;
@@ -281,6 +280,27 @@ body{
     opacity: 0.9;
 }
 
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 24px;
+    cursor: pointer;
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.prev-btn {
+    left: 20px;
+}
+
+.next-btn {
+    right: 20px;
+}
 
 /*flights css------------------------------------------------------------*/
 .rubrika button{
