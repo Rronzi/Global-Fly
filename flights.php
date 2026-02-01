@@ -43,56 +43,35 @@ $conn = $db->getConnection();
             <h3>Flights</h3>
         </div>
         <div class="fotografite">
-            <div class="rubrika">
-                <img src="photos/BasicEconomy.jpg" alt="" class="img">
-                <div class="qyteti">
-                    <p>Basic Economy class</p>
-                    <p>Cost: 190$</p>
-                    <button>Book Now</button>
-                </div>
-            </div>
-            <div class="rubrika">
-                <img src="photos/economy.jpg" alt="" class="img">
-                <div class="qyteti">
-                    <p>Economy class</p>
-                    <p>Cost: 250$</p>
-                    <button>Book Now</button>
-                </div>
-            </div>
-            <div class="rubrika">
-                <img src="photos/PremiumEconomy.jpg" alt="" class="img">
-                <div class="qyteti">
-                    <p>Premium Economy class</p>
-                    <p>Cost: 500$</p>
-                    <button>Book Now</button>
-                </div>
-            </div>
-            <div class="rubrika">
-                <img src="photos/BusinessClass.jpg" alt="" class="img">
-                <div class="qyteti">
-                    <p>Business class</p>
-                    <p>Cost: 800$</p>
-                    <button>Book Now</button>
-                </div>
-            </div>
-            <div class="rubrika">
-                <img src="photos/FirstClass.jpg" alt="" class="img">
-                <div class="qyteti">
-                    <p>First class</p>
-                    <p>Cost: 1200$</p>
-                    <button>Book Now</button>
-                </div>
-            </div>
-            <div class="rubrika">
-                <img src="photos/UltraLuxury.jpg" alt="" class="img">
-                <div class="qyteti">
-                    <p>Ultra Luxury class</p>
-                    <p>Cost: 2000$</p>
-                    <button>Book Now</button>
-                </div>
-            </div>
-            
-            
+            <?php
+            $stmt = $conn->prepare("SELECT * FROM flights ORDER BY departure_date");
+            $stmt->execute();
+            $flights = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($flights as $flight) {
+                $formatted_date = date('F j, Y \a\t g:i A', strtotime($flight['departure_date']));
+                echo '<div class="rubrika">';
+                echo '<img src="' . htmlspecialchars($flight['image']) . '" alt="' . htmlspecialchars($flight['destination']) . '" class="img">';
+                echo '<div class="qyteti" style="width: 400px;">';
+                echo '<p style="padding: 5px; margin: 0; font-weight: bold;">To: ' . htmlspecialchars($flight['destination']) . '</p>';
+                echo '<table style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">';
+                echo '<tr>';
+                echo '<td style="padding: 5px; font-weight: bold;">From: ' . htmlspecialchars($flight['departure']) . '</td>';
+                echo '<td style="padding: 5px; font-weight: bold;">Departs: ' . htmlspecialchars($formatted_date) . '</td>';
+                echo '</tr>';
+                echo '<tr>';
+                echo '<td style="padding: 5px; font-weight: bold;">Price: $' . htmlspecialchars($flight['price']) . '</td>';
+                echo '<td style="padding: 5px;">';
+                echo '<form action="booking.php" method="get" style="display:inline;">';
+                echo '<input type="hidden" name="flight_id" value="' . $flight['id'] . '">';
+                echo '<button type="submit">Book Now</button>';
+                echo '</form>';
+                echo '</td>';
+                echo '</tr>';
+                echo '</table>';
+                echo '</div>';
+                echo '</div>';
+            }
+            ?>
         </div>
     </main>
 

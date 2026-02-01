@@ -57,10 +57,10 @@ CREATE TABLE `contacts` (
 
 CREATE TABLE `flights` (
   `id` int(11) NOT NULL,
-  `flight_number` int(100) NOT NULL,
-  `departure` int(100) NOT NULL,
-  `destination` int(100) NOT NULL,
-  `departure_date` int(11) NOT NULL,
+  `flight_number` varchar(20) NOT NULL,
+  `departure` varchar(100) NOT NULL,
+  `destination` varchar(100) NOT NULL,
+  `departure_date` datetime NOT NULL,
   `price` int(11) NOT NULL,
   `image` varchar(200) NOT NULL,
   `created_by` int(11) NOT NULL,
@@ -68,6 +68,24 @@ CREATE TABLE `flights` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
+
+--
+-- Dumping data for table `flights`
+--
+
+INSERT INTO `flights` (`id`, `flight_number`, `departure`, `destination`, `departure_date`, `price`, `image`, `created_by`, `created_at`) VALUES
+(1, 'GF001', 'New York City, USA', 'Miami, Florida', '2026-03-01 10:00:00', 190, 'photos/miami.jpg', 1, '2026-02-01 00:00:00'),
+(2, 'GF002', 'New York City, USA', 'Dubai, UAE', '2026-03-02 12:00:00', 250, 'photos/dubai.webp', 1, '2026-02-01 00:00:00'),
+(3, 'GF003', 'New York City, USA', 'Istanbul, Turkey', '2026-03-03 14:00:00', 500, 'photos/istanbul.jpg', 1, '2026-02-01 00:00:00'),
+(4, 'GF004', 'London, UK', 'Madrid, Spain', '2026-03-04 16:00:00', 800, 'photos/madrid.jpg', 1, '2026-02-01 00:00:00'),
+(5, 'GF005', 'London, UK', 'Paris, France', '2026-03-05 18:00:00', 1200, 'photos/paris.webp', 1, '2026-02-01 00:00:00'),
+(6, 'GF006', 'London, UK', 'Rome, Italy', '2026-03-06 20:00:00', 2000, 'photos/rome.webp', 1, '2026-02-01 00:00:00'),
+(7, 'GF007', 'Dubai, UAE', 'Rio de Janeiro, Brazil', '2026-03-07 22:00:00', 190, 'photos/riodejaneiro.jpg', 1, '2026-02-01 00:00:00'),
+(8, 'GF008', 'Dubai, UAE', 'Rome, Italy', '2026-03-08 08:00:00', 250, 'photos/rome.webp', 1, '2026-02-01 00:00:00'),
+(9, 'GF009', 'Dubai, UAE', 'Tokyo, Japan', '2026-03-09 06:00:00', 500, 'photos/tokyo.webp', 1, '2026-02-01 00:00:00'),
+(10, 'GF010', 'Tokyo, Japan', 'Hong Kong, China', '2026-03-10 04:00:00', 800, 'photos/hongkong.jpg', 1, '2026-02-01 00:00:00'),
+(11, 'GF011', 'Tokyo, Japan', 'New York City, USA', '2026-03-11 02:00:00', 1200, 'photos/NYC.jpg', 1, '2026-02-01 00:00:00'),
+(12, 'GF012', 'Tokyo, Japan', 'London, UK', '2026-03-12 00:00:00', 2000, 'photos/london.png', 1, '2026-02-01 00:00:00');
 
 --
 -- Table structure for table `news`
@@ -149,7 +167,8 @@ ALTER TABLE `contacts`
 --
 ALTER TABLE `flights`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `fk_flights_created_by` (`created_by`);
+  ADD KEY `fk_flights_created_by` (`created_by`),
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Indexes for table `news`
