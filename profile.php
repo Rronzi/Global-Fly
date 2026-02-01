@@ -49,6 +49,7 @@ if ($user['role'] === 'admin') {
                 <li><a href="flights.php">Flights</a></li>
                 <li><a href="profile.php">Profile</a></li>
                 <li><a href="logout.php">Logout</a></li>
+                <li><a href="contact_us.php">Contact Us</a></li>
             </ul>
         </nav>
     </header>

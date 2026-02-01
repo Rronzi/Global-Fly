@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once "database.php";
 $db = new Database();
 $conn = $db->getConnection();
@@ -24,7 +25,13 @@ $conn = $db->getConnection();
                 <li><a href="index.php">Home</a></li>
                 <li><a href="about.php">About Us</a></li>
                 <li><a href="flights.php">Flights</a></li>
-                <li><a href="login.php">Login</a></li>
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <li><a href="profile.php">Profile</a></li>
+                    <li><a href="logout.php">Logout</a></li>
+                <?php else: ?>
+                    <li><a href="login.php">Login</a></li>
+                <?php endif; ?>
+                <li><a href="contact_us.php">Contact Us</a></li>
             </ul>
         </nav>
     </header>
@@ -38,7 +45,7 @@ $conn = $db->getConnection();
             <p>GlobalFly is more than just a booking service—we are a community of explorers. We listen to the needs of modern travelers and continuously enhance our system to meet the demands of an evolving world. Whether you're planning a business trip, a dream vacation, or a last-minute getaway, we work to ensure that the journey is just as enjoyable and stress-free as the destination.</p>
             <p>Our vision is to become a global leader in travel innovation by staying true to our core values: quality, trust, and customer-first service. With GlobalFly, every journey begins with clarity, comfort, and the promise of a smooth travel experience from takeoff to landing.</p>
             
-            <h3>Contact Us</h3>
+            <h3><a href="contact_us.php" style="text-decoration: none; color: inherit;">Contact Us</a></h3>
             <p>If you have any questions or need assistance, feel free to reach out to our customer support team.</p>
             <div class="about-apps">
                 <a href="#"><img src="photos/facebook.png" alt=""></a>

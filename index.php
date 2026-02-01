@@ -30,6 +30,7 @@ $conn = $db->getConnection();
                 <?php else: ?>
                     <li><a href="login.php">Login</a></li>
                 <?php endif; ?>
+                <li><a href="contact_us.php">Contact Us</a></li>
             </ul>
         </nav>
     </header>

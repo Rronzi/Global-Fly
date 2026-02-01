@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once "database.php";
 $db = new Database();
 $conn = $db->getConnection();
@@ -22,7 +23,13 @@ $conn = $db->getConnection();
                 <li><a href="index.php">Home</a></li>
                 <li><a href="about.php">About Us</a></li>
                 <li><a href="#top">Flights</a></li>
-                <li><a href="login.php">Login</a></li>
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <li><a href="profile.php">Profile</a></li>
+                    <li><a href="logout.php">Logout</a></li>
+                <?php else: ?>
+                    <li><a href="login.php">Login</a></li>
+                <?php endif; ?>
+                <li><a href="contact_us.php">Contact Us</a></li>
             </ul>
         </nav>
     </header>
@@ -118,10 +125,8 @@ function prevImage() {
     changeBackground();
 }
 
-// Set initial background
 changeBackground();
 
-// Add event listeners to buttons
 document.getElementById('nextBtn').addEventListener('click', nextImage);
 document.getElementById('prevBtn').addEventListener('click', prevImage);
 </script>
