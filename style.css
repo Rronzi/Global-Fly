@@ -1,6 +1,9 @@
 body{
     margin: 0;
     background-color: rgb(242, 159, 107);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 .header{
     display: flex;
@@ -64,6 +67,9 @@ body{
 .qyteti{
     display: flex;
     justify-content: space-between;
+}
+.qyteti p {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 .footer{
     display: flex;
@@ -160,46 +166,47 @@ body{
     font-size: 28px;
     color: #0A1A2F;
     margin-top: 20px;
-    font-family: bahnschrift;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 
 /*login css------------------------------------------------------------*/
 .login{
-    display : flex;
-    align-items: center;
-    justify-items: center;
-    flex-direction: column;
-    outline-color: black;
-    background-color: rgb(242, 159, 107);
-    text-align: center;
-    width: 350px;
-    height: 500px;
-    margin: 150px auto;
-    border-color: black;
-    border-style: solid;
-    border-radius: 6px; 
-}
-.login input{
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    border-radius: 2px;
-}
-.login button{
+    flex-grow: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
+    align-self: center;
+    outline-color: black;
+    background-color: #E6F2FF;
+    text-align: center;
+    width: 350px;
+    border-color: black;
+    border-style: solid;
+    border-radius: 6px;
+    margin: 50px 0;
+}
+.login input{
+    padding: 10px;
+    border-radius: 2px;
+    margin: 10px auto;
+    width: 70%;
+    display: block;
+}
+.login button{
     border-radius: 6px;
     background-color:  #0A1A2F;
     outline-color: black;
     padding: 10px;
     font-weight: bold;
     color: white;
+    margin: 10px auto;
+    display: block;
 }
 .login button a{
     text-decoration: none;
-    color: white;
+    color: orange;
     
 }
 .middle {
@@ -235,7 +242,7 @@ body{
     align-items: center;
     flex-direction: column;
     outline-color: black;
-    background:rgb(242, 159, 107) ;
+    background:#E6F2FF ;
     width: 350px;
     height: 650px;
     margin: 120px auto;
@@ -250,13 +257,14 @@ body{
     border-radius: 2px;
 }
 .register form button{
-    display: flex;
-    align-items: center;
     border-radius: 6px;
     background-color:  #0A1A2F;
     outline-color: black;
     padding: 10px;
     font-weight: bold;
+    margin: 10px auto;
+    display: block;
+    color: white;
 }
 .background2 {
     width: 100%;
@@ -275,7 +283,7 @@ body{
     background: rgba(0, 0, 0, 0.4); 
 }
 .register input{
-    margin: 10px 0;
+    margin: 10px 0 10px 20px;
     padding: 10px;
     width: 70%;
     border: 1px solid #090909;
@@ -284,8 +292,18 @@ body{
 }
 .register button a{
     text-decoration: none;
-    color: white;
+    color: orange;
     
+}
+.register button{
+    border-radius: 6px;
+    background-color:  #0A1A2F;
+    outline-color: black;
+    padding: 10px;
+    font-weight: bold;
+    margin: 10px auto;
+    display: block;
+    color: white;
 }
 
 
@@ -332,6 +350,9 @@ body{
 }
 .page1-body{
     background-color:   #D6ECFF;
+}
+.index-body{
+    background-color: #D6ECFF;
 }
 .bgfoto1{
     height: 600px;

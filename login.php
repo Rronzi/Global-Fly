@@ -74,9 +74,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="text" name="username" placeholder="Username" required><br>
             <input type="password" name="password" placeholder="Password" required>
             <br>
-            <button type="submit" style="color: white;">Log in</button>
-            <p>Shkoni te regjistrimi nëse nuk keni llogari.</p>
-            <button type="button"><a href="Register.php">Regjistrohu</a></button>
+            <button type="submit" style="color: orange;">Log in</button>
+            <p>Go to the registration if you don't have an account.</p>
+            <button type="button"><a href="Register.php">Register</a></button>
             <br>
         </form>
    

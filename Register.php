@@ -73,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <input type="text" name="username" placeholder="Username" style="background-color: rgb(253, 245, 245);" required>
             <input type="email" name="email" placeholder="Email" style="background-color: rgb(253, 245, 245);" required>
             <input type="password" name="password" placeholder="Password" style="background-color: rgb(253, 245, 245);" required>
-            <button type="submit" style="margin-top: 15px;color: white;">Register</button>
+            <button type="submit" style="margin-top: 15px;color: orange;">Register</button>
         </form>
         
         <br>
