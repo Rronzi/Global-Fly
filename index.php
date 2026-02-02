@@ -20,6 +20,7 @@ $conn = $db->getConnection();
                 <img src="photos/logo.png" alt="Global Fly Logo" width="80" height="80">
                 <h1>Global Fly</h1>
             </div>
+                <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
             <ul class="nav-links">
                 <li><a href="#top">Home</a></li>
                 <li><a href="about.php">About Us</a></li>
@@ -37,98 +38,42 @@ $conn = $db->getConnection();
     <!--permbajtja kryesore-->
     <main>
         <div class="bgfoto">
-            <input type="text" placeholder="Search" style="height: 30px; width: 500px;color: black;">
-            <button class="butoni_bg"><a href="flights.php">Search flights</a></button>
+            <form action="flights.php" method="get" role="search" aria-label="Search flights">
+                <input type="search" name="q" class="search-input" placeholder="Search by destination or departure city" aria-label="Search flights">
+                <button type="submit" class="search-btn">Search flights</button>
+            </form>
         </div>
         <div class="above-fotografite">
             <h3>Suggestions</h3>
         </div>
         <div class="fotografite">
-            <div class="rubrika">
-                <img src="photos/miami.jpg" alt="" class="img">
-                <div class="qyteti">
-                    <p>Miami, Florida</p>
-                    <p>Rating: 4.5/5★</p>
-                </div>
-            </div>
-            <div class="rubrika">
-                <img src="photos/dubai.webp" alt="" class="img">
-                <div class="qyteti">
-                    <p>Dubai, UAE</p>
-                    <p>Rating: 4.7/5★</p>
-                </div>
-            </div>
-            <div class="rubrika">
-                <img src="photos/istanbul.jpg" alt="" class="img">
-                <div class="qyteti">
-                    <p>Istanbul, Turkey</p>
-                    <p>Rating: 4.6/5★</p>
-                </div>
-            </div>
-            <div class="rubrika">
-                <img src="photos/london.png" alt="" class="img">
-                <div class="qyteti">
-                    <p>London, UK</p>
-                    <p>Rating: 4.4/5★</p>
-                </div>
-            </div>
-            <div class="rubrika">
-                <img src="photos/madrid.jpg" alt="" class="img">
-                <div class="qyteti">
-                    <p>Madrid, Spain</p>
-                    <p>Rating: 4.3/5★</p>
-                </div>
-            </div>
-            <div class="rubrika">
-                <img src="photos/paris.webp" alt="" class="img">
-                <div class="qyteti">
-                    <p>Paris, France</p>
-                    <p>Rating: 4.2/5★</p>
-                </div>
-            </div>
-            <div class="rubrika">
-                <img src="photos/riodejaneiro.jpg" alt="" class="img">
-                <div class="qyteti">
-                    <p>Rio de Janeiro, Brazil</p>
-                    <p>Rating: 4.1/5★</p>
-                </div>
-            </div>
-            <div class="rubrika">
-                <img src="photos/rome.webp" alt="" class="img">
-                <div class="qyteti">
-                    <p>Rome, Italy</p>
-                    <p>Rating: 4.0/5★</p>
-                </div>
-            </div>
-            <div class="rubrika">
-                <img src="photos/tokyo.webp" alt="" class="img">
-                <div class="qyteti">
-                    <p>Tokyo, Japan</p>
-                    <p>Rating: 4.8/5★</p>
-                </div>
-            </div>
-            <div class="rubrika">
-                <img src="photos/zurich.jpeg" alt="" class="img">
-                <div class="qyteti">
-                    <p>Zurich, Switzerland</p>
-                    <p>Rating: 4.3/5★</p>
-                </div>
-            </div>
-            <div class="rubrika">
-                <img src="photos/NYC.jpg" alt="" class="img">
-                <div class="qyteti">
-                    <p>New York City, USA</p>
-                    <p>Rating: 4.5/5★</p>
-                </div>
-            </div>
-            <div class="rubrika">
-                <img src="photos/hongkong.jpg" alt="" class="img">
-                <div class="qyteti">
-                    <p>Hong Kong, China</p>
-                    <p>Rating: 4.4/5★</p>
-                </div>
-            </div>
-            
+            <?php
+            // Select a small random set of flights to show as suggestions
+            try {
+                $stmt = $conn->prepare("SELECT * FROM flights ORDER BY RAND() LIMIT 9");
+                $stmt->execute();
+                $suggestions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } catch (Exception $e) {
+                $suggestions = [];
+            }
+
+            if (empty($suggestions)) {
+                echo '<p style="padding:20px;">No suggestions available right now.</p>';
+            } else {
+                foreach ($suggestions as $s) {
+                    $dest = htmlspecialchars($s['destination'] ?? 'Unknown', ENT_QUOTES, 'UTF-8');
+                    $img  = htmlspecialchars($s['image'] ?? 'photos/default.jpg', ENT_QUOTES, 'UTF-8');
+                    $rating = mt_rand(40,50) / 10; // random rating 4.0 - 5.0
+                    echo '<div class="rubrika">';
+                    echo '<img src="' . $img . '" alt="' . $dest . '" class="img">';
+                    echo '<div class="qyteti">';
+                    echo '<p>' . $dest . '</p>';
+                    echo '<p>Rating: ' . number_format($rating, 1) . '/5★</p>';
+                    echo '</div>';
+                    echo '</div>';
+                }
+            }
+            ?>
         </div>
     </main>
     
@@ -142,7 +87,7 @@ $conn = $db->getConnection();
             <li><a href="#help">Help</a></li>
         </ul>
         
-    </footer>
-    
+</footer>
+    <script src="js/nav.js"></script>
 </body>
 </html>

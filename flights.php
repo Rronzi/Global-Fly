@@ -19,6 +19,7 @@ $conn = $db->getConnection();
                 <img src="photos/logo.png" alt="Global Fly Logo" width="80" height="80">
                 <h1>Global Fly</h1>
             </div>
+            <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
             <ul class="nav-links">
                 <li><a href="index.php">Home</a></li>
                 <li><a href="about.php">About Us</a></li>
@@ -44,9 +45,19 @@ $conn = $db->getConnection();
         </div>
         <div class="fotografite">
             <?php
-            $stmt = $conn->prepare("SELECT * FROM flights ORDER BY departure_date");
-            $stmt->execute();
+            $search = trim($_GET['q'] ?? '');
+            if ($search !== '') {
+                $like = '%' . str_replace('%','\%',$search) . '%';
+                $stmt = $conn->prepare("SELECT * FROM flights WHERE destination LIKE ? OR departure LIKE ? ORDER BY departure_date");
+                $stmt->execute([$like, $like]);
+            } else {
+                $stmt = $conn->prepare("SELECT * FROM flights ORDER BY departure_date");
+                $stmt->execute();
+            }
             $flights = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if (empty($flights)) {
+                echo '<p style="padding:20px;">No flights found matching "' . htmlspecialchars($search, ENT_QUOTES, 'UTF-8') . '".</p>';
+            }
             foreach ($flights as $flight) {
                 $formatted_date = date('F j, Y \a\t g:i A', strtotime($flight['departure_date']));
                 echo '<div class="rubrika">';
@@ -85,6 +96,8 @@ $conn = $db->getConnection();
         </ul>
         
     </footer>
+</footer>
+    <script src="js/nav.js"></script>
 </body>
 <script>
 let fotot = ['photos/parisi.png', 'photos/roma.png', 'photos/jesusi.jpg', 'photos/liberty.jpg', 'photos/piramidat.jpg', 'photos/mahali.jpg', 'photos/wallofchina.jpg','photos/meksika.jpg'];

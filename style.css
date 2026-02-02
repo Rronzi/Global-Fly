@@ -40,7 +40,15 @@ body{
     position: relative;
     background-repeat: no-repeat;
     background-size: 100% 100%; ;
-    opacity: 0.8;
+    /* avoid using opacity on container so children stay fully opaque */
+}
+
+.bgfoto::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.25); /* subtle dark overlay for contrast */
+    z-index: 0;
 }
 .img{
     height: 200px;
@@ -103,6 +111,45 @@ body{
     cursor: pointer;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     font-weight: bold;
+}
+
+/* Search input inside hero */
+.bgfoto form {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    padding: 0 16px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1; /* put form above overlay */
+}
+.bgfoto .search-input {
+    width: min(900px, 70%);
+    max-width: 100%;
+    padding: 12px 16px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.2);
+    background: rgba(255,255,255,0.95);
+    color: #0A1A2F; /* ensure typed text is visible */
+}
+.bgfoto .search-input::placeholder { color: rgba(10,26,47,0.5); }
+.bgfoto .search-btn {
+    padding: 12px 20px;
+    border-radius: 8px;
+    background-color: #fff2ea;
+    color: #0A1A2F;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+@media (max-width: 800px) {
+    .bgfoto { height: 360px; }
+    .bgfoto .search-input { width: 100%; font-size: 16px; }
+    .bgfoto form { flex-direction: column; gap: 10px; padding-top: 40px; }
 }
 .bgfoto button a{
     text-decoration: none;
@@ -259,6 +306,23 @@ body{
 .about-body{
     background-color: #EAF3FF;
 }
+
+/* About page image responsiveness */
+.about-image { flex: 1; display: flex; justify-content: center; align-items: center; }
+.about-photo {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    max-height: 480px;
+}
+
+@media (max-width: 900px) {
+    .about-main { flex-direction: column; gap: 18px; padding: 16px; }
+    .about-image { width: 100%; }
+    .section { width: 100%; }
+}
 .section h2{
     text-align: center;
 }
@@ -318,7 +382,9 @@ body{
 .profile-container {
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
     min-height: 60vh;
     padding: 20px;
 }
@@ -367,6 +433,118 @@ body{
 }
 .profile-box button:hover {
     background-color: #0f2847;
+}
+
+/* Responsive adjustments for profile + bookings layout */
+@media (max-width: 800px) {
+    .profile-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .profile-box {
+        max-width: 100% !important;
+        width: 100% !important;
+        float: none !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        padding: 20px;
+    }
+    .profile-box + .profile-box {
+        margin-top: 12px;
+    }
+    table {
+        font-size: 14px;
+    }
+}
+
+/* Project-wide responsive helpers */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 16px;
+    box-sizing: border-box;
+}
+
+/* Booking grid used on booking.php */
+.booking-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: max(24px, 4vw);
+    align-items: start;
+    width: 100%;
+}
+.booking-form {
+    background-color: #f9f9f9;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    box-sizing: border-box;
+}
+.booking-form input,
+.booking-form select,
+.booking-form button,
+.booking-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Tables: make horizontally scrollable on small screens */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+/* Header / nav responsiveness */
+.nav-links {
+    gap: 8px;
+}
+
+@media (max-width: 900px) {
+    .header { padding: 10px; flex-direction: column; align-items: stretch; }
+    .logo { justify-content: center; }
+    .logo h1 { font-size: 18px; }
+    .logo img { width: 60px; height: 60px; }
+    /* Make nav wrap and center items to avoid horizontal scrolling */
+    .nav-links { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: center; width: 100%; padding: 8px 0 0 0; }
+    .nav-links li { margin: 4px 8px; }
+    .header a { margin: 0; }
+}
+
+/* Hamburger toggle styles */
+.header { position: relative; }
+.nav-toggle {
+    display: none;
+    background: transparent;
+    border: none;
+    font-size: 26px;
+    color: orange;
+    cursor: pointer;
+}
+@media (max-width: 900px) {
+    .nav-toggle { display: block; position: absolute; right: 16px; top: 14px; }
+    .nav-links { display: none; }
+    .nav-links.show { display: flex; flex-direction: column; gap: 10px; padding-top: 12px; }
+    .nav-links li { width: 100%; text-align: center; }
+}
+
+@media (max-width: 800px) {
+    .booking-grid { grid-template-columns: 1fr; }
+    .profile-container { padding: 12px; }
+    .profile-box { padding: 20px; }
+    .profile-box h2 { font-size: 20px; }
+    .profile-item { padding: 10px; margin: 10px 0; }
+    table { font-size: 13px; }
+}
+
+@media (max-width: 480px) {
+    .header { font-size: 18px; }
+    .logo h1 { display: none; }
+    .nav-links { align-items: center; }
 }
 
 

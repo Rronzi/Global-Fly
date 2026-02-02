@@ -80,9 +80,9 @@ INSERT INTO `flights` (`id`, `flight_number`, `departure`, `destination`, `depar
 (4, 'GF004', 'London, UK', 'Madrid, Spain', '2026-03-04 16:00:00', 800, 'photos/madrid.jpg', 1, '2026-02-01 00:00:00'),
 (5, 'GF005', 'London, UK', 'Paris, France', '2026-03-05 18:00:00', 1200, 'photos/paris.webp', 1, '2026-02-01 00:00:00'),
 (6, 'GF006', 'London, UK', 'Rome, Italy', '2026-03-06 20:00:00', 2000, 'photos/rome.webp', 1, '2026-02-01 00:00:00'),
-(7, 'GF007', 'Dubai, UAE', 'Rio de Janeiro, Brazil', '2026-03-07 22:00:00', 190, 'photos/riodejaneiro.jpg', 1, '2026-02-01 00:00:00'),
-(8, 'GF008', 'Dubai, UAE', 'Rome, Italy', '2026-03-08 08:00:00', 250, 'photos/rome.webp', 1, '2026-02-01 00:00:00'),
-(9, 'GF009', 'Dubai, UAE', 'Tokyo, Japan', '2026-03-09 06:00:00', 500, 'photos/tokyo.webp', 1, '2026-02-01 00:00:00'),
+(7, 'GF007', 'Prishtina, Kosovo', 'Rio de Janeiro, Brazil', '2026-03-07 22:00:00', 190, 'photos/riodejaneiro.jpg', 1, '2026-02-01 00:00:00'),
+(8, 'GF008', 'Prishtina, Kosovo', 'Rome, Italy', '2026-03-08 08:00:00', 250, 'photos/rome.webp', 1, '2026-02-01 00:00:00'),
+(9, 'GF009', 'Prishtina, Kosovo', 'Tokyo, Japan', '2026-03-09 06:00:00', 500, 'photos/tokyo.webp', 1, '2026-02-01 00:00:00'),
 (10, 'GF010', 'Tokyo, Japan', 'Hong Kong, China', '2026-03-10 04:00:00', 800, 'photos/hongkong.jpg', 1, '2026-02-01 00:00:00'),
 (11, 'GF011', 'Tokyo, Japan', 'New York City, USA', '2026-03-11 02:00:00', 1200, 'photos/NYC.jpg', 1, '2026-02-01 00:00:00'),
 (12, 'GF012', 'Tokyo, Japan', 'London, UK', '2026-03-12 00:00:00', 2000, 'photos/london.png', 1, '2026-02-01 00:00:00');
@@ -224,6 +224,19 @@ ALTER TABLE `news`
 --
 ALTER TABLE `pages`
   ADD CONSTRAINT `fk_pages_updated_by` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Sample data for table `news`
+--
+INSERT INTO `news` (`id`, `title`, `content`, `image`, `created_by`, `created_at`) VALUES
+(1, 'New Routes Announced', 'GlobalFly is excited to announce new flight routes to Europe and Asia. We are expanding our network to serve more destinations worldwide.', 'photos/news1.jpg', 1, NOW()),
+(2, 'Summer Sale - 50% Off Flights', 'Book your summer vacation now! Get up to 50% off on selected flights across all regions. Limited time offer valid until June 30th.', 'photos/news2.jpg', 1, NOW()),
+(3, 'Severe Weather Alert', 'Due to severe thunderstorms in the Northeast region, flights may experience delays of up to 2 hours. We apologize for any inconvenience and appreciate your patience.', 'photos/news3.jpg', 1, NOW()),
+(4, 'Award for Best Customer Service', 'GlobalFly has won the 2026 Award for Best Customer Service in the aviation industry. Thank you for your continued support!', 'photos/news4.jpg', 1, NOW()),
+(5, 'Safety Enhancements', 'We have implemented new safety protocols and health measures across all our flights. Your safety is our top priority.', 'photos/news5.jpg', 1, NOW()),
+(6, 'Flight Cancellations - Winter Storm', 'All flights to Denver and Salt Lake City have been canceled due to an incoming winter storm. Affected passengers will receive full refunds or rebooking options.', 'photos/news6.jpg', 1, NOW()),
+(7, 'Multiple Flight Delays Expected', 'Heavy fog conditions at major airports are expected to cause delays throughout the day. We recommend arriving at the airport early. Check your flight status regularly.', 'photos/news7.jpg', 1, NOW());
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -21,6 +21,7 @@ $conn = $db->getConnection();
                 <img src="photos/logo.png" alt="Global Fly Logo" width="80" height="80">
                 <h1>Global Fly</h1>
             </div>
+            <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
             <ul class="nav-links">
                 <li><a href="index.php">Home</a></li>
                 <li><a href="about.php">About Us</a></li>
@@ -55,7 +56,7 @@ $conn = $db->getConnection();
             </div>
         </section>
         <div class ="about-image">
-            <img src="photos/logo.png" alt="Fotografia e kompanise" width="500" height="500" style="display: block; margin: auto;">
+            <img src="photos/logo.png" alt="Fotografia e kompanise" class="about-photo">
         </div>
     </main>
     <footer class="footer">
@@ -68,5 +69,6 @@ $conn = $db->getConnection();
         </ul>
         
     </footer>
+    <script src="js/nav.js"></script>
 </body>
 </html>

@@ -26,6 +26,18 @@ if ($user['role'] === 'admin') {
         $stats[$table] = $result['count'];
     }
 }
+
+$bookings = [];
+if ($user['role'] !== 'admin') {
+    $bq = "SELECT b.*, f.departure, f.destination, f.departure_date
+           FROM bookings b
+           LEFT JOIN flights f ON b.flight_id = f.id
+           WHERE b.user_id = ?
+           ORDER BY b.id DESC";
+    $bst = $conn->prepare($bq);
+    $bst->execute([$_SESSION['user_id']]);
+    $bookings = $bst->fetchAll(PDO::FETCH_ASSOC);
+}
 ?>
 
 <!DOCTYPE html>
@@ -43,6 +55,7 @@ if ($user['role'] === 'admin') {
                 <img src="photos/logo.png" alt="Global Fly Logo" width="80" height="80">
                 <h1>Global Fly</h1>
             </div>
+            <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
             <ul class="nav-links">
                 <li><a href="index.php">Home</a></li>
                 <li><a href="about.php">About Us</a></li>
@@ -87,11 +100,14 @@ if ($user['role'] === 'admin') {
                     <p>Email: <?php echo htmlspecialchars($user['email']); ?></p>
                 </div>
 
-                <button onclick="location.href='index.php'">Go Back Home</button>
+                <div style="display:flex; gap:12px; margin-top:12px;">
+                    <button onclick="location.href='admin.php'">Dashboard</button>
+                    <button onclick="location.href='index.php'">Go Back Home</button>
+                </div>
             </div>
         <?php else: ?>
             <!-- REGULAR USER PROFILE -->
-            <div class="profile-box">
+            <div class="profile-box" style="max-width:360px; flex:0 0 360px; margin-right:12px;">
                 <h2>My Profile</h2>
                 
                 <div class="profile-item">
@@ -116,6 +132,41 @@ if ($user['role'] === 'admin') {
 
                 <button onclick="location.href='index.php'">Go Back Home</button>
             </div>
+            
+            <div class="profile-box" style="flex:1; max-width:820px; min-width:300px; margin-top: 0;">
+                <h2>My Bookings</h2>
+                <?php if (empty($bookings)): ?>
+                    <p>You have no bookings yet. Browse available <a href="flights.php">flights</a> to book.</p>
+                <?php else: ?>
+                    <table style="width:100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background:#f0f0f0; text-align:left;">
+                                <th style="padding:8px; border:1px solid #ddd">Booking #</th>
+                                <th style="padding:8px; border:1px solid #ddd">Flight</th>
+                                <th style="padding:8px; border:1px solid #ddd">Departure</th>
+                                <th style="padding:8px; border:1px solid #ddd">Class</th>
+                                <th style="padding:8px; border:1px solid #ddd">Passengers</th>
+                                <th style="padding:8px; border:1px solid #ddd">Total</th>
+                                <th style="padding:8px; border:1px solid #ddd">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($bookings as $b): ?>
+                                <tr>
+                                    <td style="padding:8px; border:1px solid #ddd"><?php echo (int)$b['id']; ?></td>
+                                    <td style="padding:8px; border:1px solid #ddd"><?php echo htmlspecialchars(($b['departure'] ?? 'Unknown') . ' → ' . ($b['destination'] ?? 'Unknown'), ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td style="padding:8px; border:1px solid #ddd"><?php echo htmlspecialchars($b['departure_date'] ?? 'N/A', ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td style="padding:8px; border:1px solid #ddd"><?php echo htmlspecialchars($b['class'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                    <td style="padding:8px; border:1px solid #ddd"><?php echo (int)$b['passengers']; ?></td>
+                                    <td style="padding:8px; border:1px solid #ddd">$<?php echo number_format((float)$b['total_cost'], 2); ?></td>
+                                    <td style="padding:8px; border:1px solid #ddd"><?php echo htmlspecialchars($b['status'], ENT_QUOTES, 'UTF-8'); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php endif; ?>
+            </div>
+            
         <?php endif; ?>
     </div>
 
@@ -131,5 +182,7 @@ if ($user['role'] === 'admin') {
             <li><a href="#help">Help</a></li>
         </ul>
     </footer>
+</footer>
+    <script src="js/nav.js"></script>
 </body>
 </html>

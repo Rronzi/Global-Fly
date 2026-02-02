@@ -49,6 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <img src="photos/logo.png" alt="Global Fly Logo" width="80" height="80">
                 <h1>Global Fly</h1>
             </div>
+            <button class="nav-toggle" aria-label="Toggle navigation">☰</button>
             <ul class="nav-links">
                 <li><a href="index.php">Home</a></li>
                 <li><a href="about.php">About Us</a></li>
@@ -97,6 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         
     </footer>
 
-    
+    <script src="js/nav.js"></script>
+
 </body>
 </html>
