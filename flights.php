@@ -24,7 +24,8 @@ $conn = $db->getConnection();
                 <li><a href="index.php">Home</a></li>
                 <li><a href="about.php">About Us</a></li>
                 <li><a href="#top">Flights</a></li>
-                <?php if (isset($_SESSION['user_id'])): ?>
+                <li><a href="news.php">News</a></li>
+                <?php if (isset($_SESSION['user_id'])): ?> 
                     <li><a href="profile.php">Profile</a></li>
                     <li><a href="logout.php">Logout</a></li>
                 <?php else: ?>
@@ -71,12 +72,19 @@ $conn = $db->getConnection();
                 echo '</tr>';
                 echo '<tr>';
                 echo '<td style="padding: 5px; font-weight: bold;">Price: $' . htmlspecialchars($flight['price']) . '</td>';
-                echo '<td style="padding: 5px;">';
-                echo '<form action="booking.php" method="get" style="display:inline;">';
-                echo '<input type="hidden" name="flight_id" value="' . $flight['id'] . '">';
-                echo '<button type="submit">Book Now</button>';
-                echo '</form>';
-                echo '</td>';
+                if (($flight['status'] ?? 'active') === 'cancelled') {
+                    echo '<td style="padding: 5px;"><span style="color:#c00;font-weight:bold;">Cancelled</span>';
+                    $reason = htmlspecialchars($flight['cancellation_reason'] ?? 'Unspecified', ENT_QUOTES, 'UTF-8');
+                    if ($reason) { echo '<div style="font-size:0.9em;color:#666;">Reason: ' . $reason . '</div>'; }
+                    echo '</td>';
+                } else {
+                    echo '<td style="padding: 5px;">';
+                    echo '<form action="booking.php" method="get" style="display:inline;">';
+                    echo '<input type="hidden" name="flight_id" value="' . $flight['id'] . '">';
+                    echo '<button type="submit">Book Now</button>';
+                    echo '</form>';
+                    echo '</td>';
+                }
                 echo '</tr>';
                 echo '</table>';
                 echo '</div>';

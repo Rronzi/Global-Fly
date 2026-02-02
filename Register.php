@@ -54,7 +54,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <li><a href="index.php">Home</a></li>
                 <li><a href="about.php">About Us</a></li>
                 <li><a href="flights.php">Flights</a></li>
-                <?php if (isset($_SESSION['user_id'])): ?>
+                <li><a href="news.php">News</a></li>
+                <?php if (isset($_SESSION['user_id'])): ?> 
                     <li><a href="profile.php">Profile</a></li>
                     <li><a href="logout.php">Logout</a></li>
                 <?php else: ?>

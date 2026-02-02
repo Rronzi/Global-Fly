@@ -49,6 +49,8 @@ if ($section === 'flights') {
         $destination = trim($_POST['destination'] ?? '');
         $departure_date = trim($_POST['departure_date'] ?? '');
         $price = (int)($_POST['price'] ?? 0);
+        $status = in_array($_POST['status'] ?? 'active', ['active','cancelled']) ? $_POST['status'] : 'active';
+        $cancellation_reason = trim($_POST['cancellation_reason'] ?? '');
 
         // handle image upload
         $imagePath = null;
@@ -72,6 +74,12 @@ if ($section === 'flights') {
 
         if (empty($error)) {
             if ($fid) {
+                // fetch previous status to detect newly cancelled
+                $prev = $conn->prepare('SELECT status FROM flights WHERE id = ?');
+                $prev->execute([$fid]);
+                $prevRow = $prev->fetch(PDO::FETCH_ASSOC);
+                $prevStatus = $prevRow['status'] ?? 'active';
+
                 // update; if new image uploaded, replace
                 if ($imagePath) {
                     // fetch old image to unlink
@@ -82,20 +90,39 @@ if ($section === 'flights') {
                         $oldpath = __DIR__ . DIRECTORY_SEPARATOR . $orow['image'];
                         if (file_exists($oldpath)) {@unlink($oldpath);}    
                     }
-                    $q = 'UPDATE flights SET flight_number = ?, departure = ?, destination = ?, departure_date = ?, price = ?, image = ?, created_by = ? WHERE id = ?';
+                    $q = 'UPDATE flights SET flight_number = ?, departure = ?, destination = ?, departure_date = ?, price = ?, image = ?, status = ?, cancellation_reason = ?, created_by = ? WHERE id = ?';
                     $stmt = $conn->prepare($q);
-                    $stmt->execute([$flight_number, $departure, $destination, $departure_date, $price, $imagePath, $_SESSION['user_id'], $fid]);
+                    $stmt->execute([$flight_number, $departure, $destination, $departure_date, $price, $imagePath, $status, $cancellation_reason, $_SESSION['user_id'], $fid]);
                 } else {
-                    $q = 'UPDATE flights SET flight_number = ?, departure = ?, destination = ?, departure_date = ?, price = ?, created_by = ? WHERE id = ?';
+                    $q = 'UPDATE flights SET flight_number = ?, departure = ?, destination = ?, departure_date = ?, price = ?, status = ?, cancellation_reason = ?, created_by = ? WHERE id = ?';
                     $stmt = $conn->prepare($q);
-                    $stmt->execute([$flight_number, $departure, $destination, $departure_date, $price, $_SESSION['user_id'], $fid]);
+                    $stmt->execute([$flight_number, $departure, $destination, $departure_date, $price, $status, $cancellation_reason, $_SESSION['user_id'], $fid]);
                 }
+
+                // if newly cancelled, create a news item
+                if ($status === 'cancelled' && $prevStatus !== 'cancelled') {
+                    $title = 'Flight Cancelled: ' . ($flight_number ?: 'Scheduled Flight');
+                    $content = "Flight " . ($flight_number ?: '') . " from " . ($departure ?: '') . " to " . ($destination ?: '') . " scheduled at " . ($departure_date ?: '') . " has been cancelled. Reason: " . ($cancellation_reason ?: 'Unspecified') . ". Please contact support for rebooking or refund options.";
+
+                    $conn->prepare('INSERT INTO news (title,content,image,created_by) VALUES (?,?,?,?)')
+                         ->execute([$title, $content, '', $_SESSION['user_id']]);
+                }
+
                 $message = 'Flight updated.';
             } else {
-                $q = 'INSERT INTO flights (flight_number, departure, destination, departure_date, price, image, created_by) VALUES (?, ?, ?, ?, ?, ?, ?)';
+                $q = 'INSERT INTO flights (flight_number, departure, destination, departure_date, price, image, status, cancellation_reason, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
                 $stmt = $conn->prepare($q);
-                $stmt->execute([$flight_number, $departure, $destination, $departure_date, $price, $imagePath ?? '', $_SESSION['user_id']]);
+                $stmt->execute([$flight_number, $departure, $destination, $departure_date, $price, $imagePath ?? '', $status, $cancellation_reason, $_SESSION['user_id']]);
                 $message = 'Flight added.';
+
+                // if added already cancelled, create news
+                if ($status === 'cancelled') {
+                    $title = 'Flight Cancelled: ' . ($flight_number ?: 'Scheduled Flight');
+                    $content = "Flight " . ($flight_number ?: '') . " from " . ($departure ?: '') . " to " . ($destination ?: '') . " scheduled at " . ($departure_date ?: '') . " has been cancelled. Reason: " . ($cancellation_reason ?: 'Unspecified') . ". Please contact support for rebooking or refund options.";
+
+                    $conn->prepare('INSERT INTO news (title,content,image,created_by) VALUES (?,?,?,?)')
+                         ->execute([$title, $content, '', $_SESSION['user_id']]);
+                }
             }
         }
     }
@@ -204,7 +231,31 @@ if ($section === 'bookings') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_booking_status'])) {
         $bid = (int)($_POST['id'] ?? 0);
         $status = in_array($_POST['status'], ['pending','confirmed','cancelled']) ? $_POST['status'] : 'pending';
-        if ($bid > 0) { $conn->prepare('UPDATE bookings SET status = ? WHERE id = ?')->execute([$status, $bid]); $message = 'Booking status updated.'; }
+        if ($bid > 0) {
+            // fetch previous booking status and related flight details
+            $st = $conn->prepare('SELECT b.*, f.flight_number, f.departure, f.destination, f.departure_date FROM bookings b LEFT JOIN flights f ON b.flight_id=f.id WHERE b.id = ?');
+            $st->execute([$bid]);
+            $booking = $st->fetch(PDO::FETCH_ASSOC);
+
+            // update booking status
+            $conn->prepare('UPDATE bookings SET status = ? WHERE id = ?')->execute([$status, $bid]);
+            $message = 'Booking status updated.';
+
+            // if newly cancelled, create a news item so users see it on the News page
+            if ($status === 'cancelled' && ($booking['status'] ?? '') !== 'cancelled') {
+                $flightNum = $booking['flight_number'] ?? '';
+                $dep = $booking['departure'] ?? '';
+                $dest = $booking['destination'] ?? '';
+                $dtime = $booking['departure_date'] ?? '';
+                $pass = $booking['passengers'] ?? '';
+
+                $title = 'Flight Cancelled: ' . ($flightNum ?: 'Scheduled Flight');
+                $content = "Flight " . ($flightNum ?: '') . " from " . ($dep ?: '') . " to " . ($dest ?: '') . " scheduled at " . ($dtime ?: '') . " has been cancelled. Affected passengers: " . ($pass ?: 'N/A') . ". Please contact support for rebooking or refund options.";
+
+                $conn->prepare('INSERT INTO news (title,content,image,created_by) VALUES (?,?,?,?)')
+                     ->execute([$title, $content, '', $_SESSION['user_id']]);
+            }
+        }
     }
 
     // Create new booking
@@ -284,6 +335,7 @@ if ($section === 'bookings') {
             </div>
             <ul class="nav-links">
                 <li><a href="index.php">Home</a></li>
+                <li><a href="news.php">News</a></li>
                 <li><a href="logout.php">Logout</a></li>
             </ul>
         </nav>
@@ -310,7 +362,7 @@ if ($section === 'bookings') {
                 <p><a class="action-link" href="admin.php?section=flights">List</a> <span style="margin:0 8px;color:#999;">|</span> <a class="action-link" href="admin.php?section=flights&action=add">Add Flight</a></p>
 
                 <?php if (isset($_GET['action']) && $_GET['action'] === 'add' || $editFlight): ?>
-                    <?php $f = $editFlight ?? ['id'=>'','flight_number'=>'','departure'=>'','destination'=>'','departure_date'=>'','price'=>'','image'=>'']; ?>
+                    <?php $f = $editFlight ?? ['id'=>'','flight_number'=>'','departure'=>'','destination'=>'','departure_date'=>'','price'=>'','image'=>'','status'=>'active','cancellation_reason'=>'']; ?>
                     <form method="post" enctype="multipart/form-data">
                         <input type="hidden" name="id" value="<?php echo htmlspecialchars($f['id']); ?>">
                         <label>Flight number</label>
@@ -323,6 +375,13 @@ if ($section === 'bookings') {
                         <input name="departure_date" required value="<?php echo htmlspecialchars($f['departure_date']); ?>">
                         <label>Price (integer)</label>
                         <input name="price" required value="<?php echo htmlspecialchars($f['price']); ?>">
+                        <label>Status</label>
+                        <select name="status">
+                            <option value="active" <?php echo ($f['status'] ?? 'active')==='active'?'selected':''; ?>>Active</option>
+                            <option value="cancelled" <?php echo ($f['status'] ?? '')==='cancelled'?'selected':''; ?>>Cancelled</option>
+                        </select>
+                        <label>Cancellation reason (optional)</label>
+                        <input name="cancellation_reason" value="<?php echo htmlspecialchars($f['cancellation_reason']); ?>">
                         <label>Image (upload will overwrite)</label>
                         <input type="file" name="image" accept="image/*">
                         <?php if (!empty($f['image'])): ?>
@@ -334,7 +393,7 @@ if ($section === 'bookings') {
                     <div class="table-wrapper">
                     <table class="admin-table">
                         <thead>
-                            <tr><th style="width:60px;">ID</th><th>Flight #</th><th>From</th><th>To</th><th>Departure</th><th style="width:90px;">Price</th><th style="width:80px;">Image</th><th style="width:160px;">Actions</th></tr>
+                            <tr><th style="width:60px;">ID</th><th>Flight #</th><th>From</th><th>To</th><th>Departure</th><th style="width:90px;">Price</th><th>Status</th><th style="width:80px;">Image</th><th style="width:160px;">Actions</th></tr>
                         </thead>
                         <tbody>
                         <?php foreach ($flights as $row): ?>
@@ -345,6 +404,7 @@ if ($section === 'bookings') {
                                 <td><?php echo htmlspecialchars($row['destination']); ?></td>
                                 <td><?php echo htmlspecialchars($row['departure_date']); ?></td>
                                 <td>$<?php echo htmlspecialchars($row['price']); ?></td>
+                                <td><?php echo htmlspecialchars(($row['status'] ?? 'active')); ?></td>
                                 <td><?php if (!empty($row['image'])): ?><img src="<?php echo htmlspecialchars($row['image']); ?>" style="height:48px;"><?php endif; ?></td>
                                 <td class="actions-cell" style="white-space:nowrap;">
                                     <a class="action-link" href="admin.php?section=flights&action=edit&id=<?php echo (int)$row['id']; ?>">Edit</a>

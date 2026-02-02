@@ -63,6 +63,8 @@ CREATE TABLE `flights` (
   `departure_date` datetime NOT NULL,
   `price` int(11) NOT NULL,
   `image` varchar(200) NOT NULL,
+  `status` enum('active','cancelled') NOT NULL DEFAULT 'active',
+  `cancellation_reason` varchar(255) NOT NULL DEFAULT '',
   `created_by` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

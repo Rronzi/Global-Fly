@@ -23,13 +23,10 @@ if ($flight_id > 0) {
 
     if (!$flight) {
         $error = 'The selected flight could not be found.';
-    }
-} else {
-    $error = 'No flight was selected.';
-}
-
-// ---- Handle booking submission ----
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    } else {
+        if (($flight['status'] ?? 'active') === 'cancelled') {
+            $error = 'This flight has been cancelled. Reason: ' . ($flight['cancellation_reason'] ?? 'Unspecified') . '.';
+        }
     // Raw values; escape only when outputting
     $name       = trim($_POST['name'] ?? '');
     $email      = trim($_POST['email'] ?? '');
@@ -110,7 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <li><a href="index.php">Home</a></li>
                 <li><a href="about.php">About Us</a></li>
                 <li><a href="flights.php">Flights</a></li>
-                <?php if (isset($_SESSION['user_id'])): ?>
+                <li><a href="news.php">News</a></li>
+                <?php if (isset($_SESSION['user_id'])): ?> 
                     <li><a href="profile.php">Profile</a></li>
                     <li><a href="logout.php">Logout</a></li>
                 <?php else: ?>
