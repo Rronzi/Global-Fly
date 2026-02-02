@@ -10,7 +10,13 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 // ---- Load flight ----
-$flight_id = isset($_GET['flight_id']) ? (int)$_GET['flight_id'] : 0;
+// Accept `flight_id` from GET when arriving, or from POST when submitting the form
+$flight_id = 0;
+if (isset($_GET['flight_id'])) {
+    $flight_id = (int)$_GET['flight_id'];
+} elseif (isset($_POST['flight_id'])) {
+    $flight_id = (int)$_POST['flight_id'];
+}
 
 $message = '';
 $error   = '';
@@ -27,24 +33,27 @@ if ($flight_id > 0) {
         if (($flight['status'] ?? 'active') === 'cancelled') {
             $error = 'This flight has been cancelled. Reason: ' . ($flight['cancellation_reason'] ?? 'Unspecified') . '.';
         }
-    // Raw values; escape only when outputting
-    $name       = trim($_POST['name'] ?? '');
-    $email      = trim($_POST['email'] ?? '');
-    $phone      = trim($_POST['phone'] ?? '');
-    $passengers = isset($_POST['passengers']) ? (int)$_POST['passengers'] : 0;
-    $class      = $_POST['class'] ?? '';
-    $posted_flight_id = isset($_POST['flight_id']) ? (int)$_POST['flight_id'] : 0;
 
-    // Validation
-    if ($posted_flight_id !== $flight_id) {
-        $error = 'Invalid flight selection.';
-    } elseif (!$flight) {
-        $error = 'Cannot book this flight because it does not exist.';
-    } elseif ($passengers < 1) {
-        $error = 'Number of passengers must be at least 1.';
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = 'Please enter a valid email address.';
-    } else {
+        // Only process form input when the request is a POST (form submission)
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Raw values; escape only when outputting
+            $name       = trim($_POST['name'] ?? '');
+            $email      = trim($_POST['email'] ?? '');
+            $phone      = trim($_POST['phone'] ?? '');
+            $passengers = isset($_POST['passengers']) ? (int)$_POST['passengers'] : 0;
+            $class      = $_POST['class'] ?? '';
+            $posted_flight_id = isset($_POST['flight_id']) ? (int)$_POST['flight_id'] : 0;
+
+            // Validation
+            if ($posted_flight_id !== $flight_id) {
+                $error = 'Invalid flight selection.';
+            } elseif (!$flight) {
+                $error = 'Cannot book this flight because it does not exist.';
+            } elseif ($passengers < 1) {
+                $error = 'Number of passengers must be at least 1.';
+            } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $error = 'Please enter a valid email address.';
+            } else {
         $class_multipliers = [
             'Basic Economy'   => 1,
             'Economy'         => 1.3,
@@ -85,6 +94,8 @@ if ($flight_id > 0) {
             }
         }
     }
+    }
+}
 }
 ?>
 <!DOCTYPE html>

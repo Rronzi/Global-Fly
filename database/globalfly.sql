@@ -28,9 +28,16 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `bookings` (
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `flight_id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `phone` varchar(50) NOT NULL,
+  `passengers` int(11) NOT NULL DEFAULT 1,
+  `class` varchar(50) NOT NULL,
+  `total_cost` decimal(10,2) NOT NULL DEFAULT 0.00,
   `status` enum('pending','confirmed','cancelled') NOT NULL,
   `booked_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -63,8 +70,6 @@ CREATE TABLE `flights` (
   `departure_date` datetime NOT NULL,
   `price` int(11) NOT NULL,
   `image` varchar(200) NOT NULL,
-  `status` enum('active','cancelled') NOT NULL DEFAULT 'active',
-  `cancellation_reason` varchar(255) NOT NULL DEFAULT '',
   `created_by` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -155,7 +160,8 @@ CREATE TABLE `users` (
 ALTER TABLE `bookings`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_bookings_user_id` (`user_id`),
-  ADD KEY `fk_bookings_flight_id` (`flight_id`);
+  ADD KEY `fk_bookings_flight_id` (`flight_id`),
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Indexes for table `contacts`
